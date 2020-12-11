@@ -6,9 +6,9 @@ const name = document.querySelector('#name');
 // sets focus of first input field on page load
 name.focus();
 
-const jobRole = document.querySelector('#title');
-const otherJobRole = document.querySelector('#other-job-role');
-// hides other job role text input by default
+const jobRole = document.querySelector('#title'); // job role select element
+const otherJobRole = document.querySelector('#other-job-role'); // other job role text input
+// hides otherJobRole by default
 otherJobRole.style.display = 'none';
 
 // job role select element event listener
@@ -23,9 +23,9 @@ jobRole.addEventListener( 'change', (e) => {
 // T-SHIRT INFO SECTION //
 // ==================== //
 
-const tshirtDesign = document.querySelector('#design');
-const tshirtColor = document.querySelector('#color');
-const colorOptions = tshirtColor.children;
+const tshirtDesign = document.querySelector('#design'); // t-shirt design select element
+const tshirtColor = document.querySelector('#color'); // t-shirt color select element
+const colorOptions = tshirtColor.children; // t-shirt color options
 
 // disables shirt color select element by default until user selects a shirt designxsx
 tshirtColor.disabled = true;
@@ -71,3 +71,8 @@ activityRegister.addEventListener( 'change', (e) => {
     // updates HTML of activityTotal to reflect the totalCost
     activityTotal.innerHTML = `Total: $${totalCost}`;
 });
+
+// ==================== //
+// PAYMENT INFO SECTION //
+// ==================== //
+

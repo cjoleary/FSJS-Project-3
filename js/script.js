@@ -82,4 +82,26 @@ const payPal = document.querySelector('#paypal'); // paypal div element
 const bitCoin = document.querySelector('#bitcoin'); // bitcoin div element
 
 // hides paypal and bitcoin divs by default
+payPal.hidden = true;
+bitCoin.hidden = true;
 
+// sets selected attribute of payment select element's 2nd child (credit card)
+payment.children[1].selected = true;
+
+// event listener for payment select element
+payment.addEventListener( 'change', (e) => {
+    // if the select option value matches the id of the payment div elements, show that div element, else hide it
+    if ( e.target.value === 'credit-card' ) {
+        creditCard.hidden = false;
+        payPal.hidden = true;
+        bitCoin.hidden = true;  
+    } else if ( e.target.value === 'paypal' ) {
+        payPal.hidden = false;
+        creditCard.hidden = true;
+        bitCoin.hidden = true;
+    } else if ( e.target.value === 'bitcoin' ) {
+        bitCoin.hidden = false;
+        creditCard.hidden = true;
+        payPal.hidden = true;
+    }
+});

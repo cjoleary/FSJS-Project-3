@@ -147,19 +147,26 @@ const cvvValidator = () => {
     return cvvIsValid;
 }
 
-
 // form submission event listener
 form.addEventListener( 'submit', (e) => {
-    
+    e.preventDefault();
     // if any of the validation helper functions return false, alert the user of their error
     if ( !nameValidator() ) {
         e.preventDefault();
-        alert('Please enter a valid name');
+        name.parentElement.classList = 'not-valid'; // add error indicator if not valid
+        name.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+    } else {
+        name.parentElement.classList = 'valid'; // add valid indicator if valid
+        name.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
     }
       
     if ( !emailValidator() ) {
         e.preventDefault();
-        alert('Please enter a valid email');
+        email.parentElement.classList = 'not-valid';; // add error indicator if not valid
+        email.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+    } else {
+        email.parentElement.classList = 'valid';; // add error indicator if not valid
+        email.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
     }
 
     // only validate credit card info if credit card is selected in the payment select element
@@ -167,17 +174,29 @@ form.addEventListener( 'submit', (e) => {
         
         if ( !ccNumValidator() ) {
             e.preventDefault();
-            alert('Please enter a valid credit card number');
+            ccNum.parentElement.classList = 'not-valid';; // add error indicator if not valid
+            ccNum.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+        } else {
+            ccNum.parentElement.classList = 'valid';; // add error indicator if not valid
+            ccNum.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
         }
         
         if ( !zipCodeValidator() ) {
             e.preventDefault();
-            alert('Please enter a valid zip code');
+            zipCode.parentElement.classList = 'not-valid';; // add error indicator if not valid
+            zipCode.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+        } else {
+            zipCode.parentElement.classList = 'valid';; // add error indicator if not valid
+            zipCode.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
         }
 
         if ( !cvvValidator() ) {
             e.preventDefault();
-            alert('Please enter a valid cvv number');
+            cvv.parentElement.classList = 'not-valid'; // add error indicator if not valid
+            cvv.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+        } else {
+            cvv.parentElement.classList = 'valid';; // add error indicator if not valid
+            cvv.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
         }
     }
 });

@@ -53,7 +53,7 @@ tshirtDesign.addEventListener( 'change', (e) => {
 // REGISTER FOR ACTIVITIES SECTION //
 // =============================== //
 
-const activityRegister = document.querySelector('#activities'); // register for activity fieldset
+const activityRegister = document.querySelector('#activities'); // register for activities fieldset
 const activityTotal = document.querySelector('#activities-cost'); // activities cost <p> element
 let totalCost = 0; // sets user's cost of attending conference to 0
 
@@ -181,3 +181,22 @@ form.addEventListener( 'submit', (e) => {
         }
     }
 });
+
+// ================================= //
+// ACCESSIBILITY -- ERROR INDICATION //
+// ================================= //
+
+const activities = document.querySelectorAll('[type=checkbox]'); // activity check boxes in register for activities fieldset
+
+// loop through activities
+for ( let i = 0; i < activities.length; i++ ) {
+    // add focus class to check box if user clicks on it
+    activities[i].addEventListener( 'focus', (e) => {
+        activities[i].parentElement.classList.add('focus');
+    });
+    // remove focus class from check box if user clicks off of it
+    activities[i].addEventListener( 'blur', (e) => {
+        activities[i].parentElement.classList.remove('focus');
+    });
+}
+

@@ -9,13 +9,13 @@ name.focus();
 const jobRole = document.querySelector('#title'); // job role select element
 const otherJobRole = document.querySelector('#other-job-role'); // other job role text input
 // hides otherJobRole by default
-otherJobRole.style.display = 'none';
+otherJobRole.hidden = true;
 
 // job role select element event listener
 jobRole.addEventListener( 'change', (e) => {
     // if 'other' is selected, make other job role text input visible
     if ( e.target.value === 'other' ) {
-        otherJobRole.style.display = 'block';
+        otherJobRole.hidden = false;
     }
 });
 
@@ -75,4 +75,11 @@ activityRegister.addEventListener( 'change', (e) => {
 // ==================== //
 // PAYMENT INFO SECTION //
 // ==================== //
+
+const payment = document.querySelector('#payment'); // payment select element
+const creditCard = document.querySelector('#credit-card'); // credit card div element
+const payPal = document.querySelector('#paypal'); // paypal div element
+const bitCoin = document.querySelector('#bitcoin'); // bitcoin div element
+
+// hides paypal and bitcoin divs by default
 

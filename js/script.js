@@ -105,3 +105,36 @@ payment.addEventListener( 'change', (e) => {
         payPal.hidden = true;
     }
 });
+
+// =============== //
+// FORM VALIDATION //
+// =============== //
+
+const form = document.querySelector('form'); // form element
+const email = document.querySelector('#email'); // email input element
+const ccNum = document.querySelector('#cc-num'); // credit card number input element
+const zipCode = document.querySelector('#zip'); // zip code input element
+const cvv = document.querySelector('#cvv'); // CVV input element
+
+// form submission event listener
+form.addEventListener( 'submit', (e) => {
+    e.preventDefault();
+
+    const nameValue = name.value; // value of name field
+    const nameIsValid = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z']*?$/.test(nameValue); // validates name field
+    
+    const emailValue = email.value; // value of email field
+    const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue); // validates email field
+
+    if ( payment.children[1].selected = true ) {
+        const ccNumValue = ccNum.value; // value of card number field
+        const ccNumIsValid = /^(?:4[0-9]{12}(?:[0-9]{3})? 
+            | (?:5[1-5][0-9]{2}                
+            | 222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}
+            | 3[47][0-9]{13}                   
+            | 3(?:0[0-5]|[68][0-9])[0-9]{11}   
+            | 6(?:011|5[0-9]{2})[0-9]{12}      
+            | (?:2131|1800|35\d{3})\d{11}      
+       )?/.test(ccNumIsValid);// validates card number field
+    }
+});

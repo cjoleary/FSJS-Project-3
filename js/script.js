@@ -161,7 +161,6 @@ form.addEventListener( 'submit', (e) => {
         e.preventDefault();
         alert('Please enter a valid email');
     }
-    
 
     // only validate credit card info if credit card is selected in the payment select element
     if ( payment.children[1].selected = true ) {

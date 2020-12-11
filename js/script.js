@@ -116,26 +116,69 @@ const ccNum = document.querySelector('#cc-num'); // credit card number input ele
 const zipCode = document.querySelector('#zip'); // zip code input element
 const cvv = document.querySelector('#cvv'); // CVV input element
 
-// form submission event listener
-form.addEventListener( 'submit', (e) => {
-  
+// validation helper functions
+const nameValidator = () => {
     const nameValue = name.value; // value of name field
     const nameIsValid = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z']*?$/.test(nameValue); // validates name field
-    
+    return nameIsValid;
+}
+
+const emailValidator = () => {
     const emailValue = email.value; // value of email field
     const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue); // validates email field
+    return emailIsValid;
+}
+
+const ccNumValidator = () => {
+    const ccNumValue = ccNum.value; // value of card number field
+    const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNumValue);// validates card number field
+    return ccNumIsValid;
+}
+
+const zipCodeValidator = () => {
+    const zipCodeValue = zipCode.value; // value of zip code field
+    const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue); // validates zip code field
+    return zipCodeIsValid;
+}
+
+const cvvValidator = () => {
+    const cvvValue = cvv.value; // value of cvv field
+    const cvvIsValid = /^\d{3}$/.test(cvvValue); // validates cvv field
+    return cvvIsValid;
+}
+
+
+// form submission event listener
+form.addEventListener( 'submit', (e) => {
+    
+    // if any of the validation helper functions return false, alert the user of their error
+    if ( !nameValidator() ) {
+        e.preventDefault();
+        alert('Please enter a valid name');
+    }
+      
+    if ( !emailValidator() ) {
+        e.preventDefault();
+        alert('Please enter a valid email');
+    }
+    
 
     // only validate credit card info if credit card is selected in the payment select element
     if ( payment.children[1].selected = true ) {
-        const ccNumValue = ccNum.value; // value of card number field
-        const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNumValue);// validates card number field
+        
+        if ( !ccNumValidator() ) {
+            e.preventDefault();
+            alert('Please enter a valid credit card number');
+        }
+        
+        if ( !zipCodeValidator() ) {
+            e.preventDefault();
+            alert('Please enter a valid zip code');
+        }
 
-        const zipCodeValue = zipCode.value; // value of zip code field
-        const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue); // validates zip code field
-
-        const cvvValue = cvv.value; // value of cvv field
-        const cvvIsValid = /^\d{3}$/.test(cvvValue); // validates cvv field
-
-        console.log(ccNumIsValid, zipCodeIsValid, cvvIsValid);
+        if ( !cvvValidator() ) {
+            e.preventDefault();
+            alert('Please enter a valid cvv number');
+        }
     }
 });

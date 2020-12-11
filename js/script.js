@@ -48,3 +48,26 @@ tshirtDesign.addEventListener( 'change', (e) => {
         }
     }
 });
+
+// =============================== //
+// REGISTER FOR ACTIVITIES SECTION //
+// =============================== //
+
+const activityRegister = document.querySelector('#activities'); // register for activity fieldset
+const activityTotal = document.querySelector('#activities-cost'); // activities cost <p> element
+let totalCost = 0; // sets user's cost of attending conference to 0
+
+// event listener for register for activity fieldset
+activityRegister.addEventListener( 'change', (e) => {
+    const activityCost = parseInt(e.target.getAttribute('data-cost')); // the cost of each individual activity as a number
+    
+    // updates totalCost as user checks or unchecks activities from activity fieldset
+    if ( e.target.checked === true ) {
+        totalCost += activityCost;
+    } else if ( e.target.checked === false ) {
+        totalCost -= activityCost;
+    }
+    
+    // updates HTML of activityTotal to reflect the totalCost
+    activityTotal.innerHTML = `Total: $${totalCost}`;
+});

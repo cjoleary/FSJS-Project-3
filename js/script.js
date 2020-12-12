@@ -19,6 +19,7 @@ jobRole.addEventListener( 'change', (e) => {
     }
 });
 
+
 // ==================== //
 // T-SHIRT INFO SECTION //
 // ==================== //
@@ -49,6 +50,7 @@ tshirtDesign.addEventListener( 'change', (e) => {
     }
 });
 
+
 // =============================== //
 // REGISTER FOR ACTIVITIES SECTION //
 // =============================== //
@@ -56,6 +58,20 @@ tshirtDesign.addEventListener( 'change', (e) => {
 const activityRegister = document.querySelector('#activities'); // register for activities fieldset
 const activityTotal = document.querySelector('#activities-cost'); // activities cost <p> element
 let totalCost = 0; // sets user's cost of attending conference to 0
+const activities = document.querySelectorAll('[type=checkbox]'); // activity check boxes in register for activities fieldset
+console.log(activities);
+
+// loop through activities
+for ( let i = 0; i < activities.length; i++ ) {
+    // add focus class to check box if user clicks on it
+    activities[i].addEventListener( 'focus', (e) => {
+        activities[i].parentElement.classList.add('focus');
+    });
+    // remove focus class from check box if user clicks off of it
+    activities[i].addEventListener( 'blur', (e) => {
+        activities[i].parentElement.classList.remove('focus');
+    });
+}
 
 // event listener for register for activity fieldset
 activityRegister.addEventListener( 'change', (e) => {
@@ -70,7 +86,41 @@ activityRegister.addEventListener( 'change', (e) => {
     
     // updates HTML of activityTotal to reflect the totalCost
     activityTotal.innerHTML = `Total: $${totalCost}`;
+
+    // if user selects an activity, other activities with a conflicting times are disabled
+    if ( activities[1].checked === true ) {
+        activities[3].disabled = true;
+        activities[3].parentElement.style.opacity = '.5';
+    } else {
+        activities[3].disabled = false;
+        activities[3].parentElement.style.opacity = '1';
+    }
+    
+    if ( activities[3].checked === true ) {
+        activities[1].disabled = true;
+        activities[1].parentElement.style.opacity = '.5';
+    } else {
+        activities[1].disabled = false;
+        activities[1].parentElement.style.opacity = '1';
+    }
+    
+    if ( activities[2].checked === true ) {
+        activities[4].disabled = true;
+        activities[4].parentElement.style.opacity = '.5';
+    } else {
+        activities[4].disabled = false;
+        activities[4].parentElement.style.opacity = '1';
+    }
+    
+    if ( activities[4].checked === true ) {
+        activities[2].disabled = true;
+        activities[2].parentElement.style.opacity = '.5';
+    } else {
+        activities[2].disabled = false;
+        activities[2].parentElement.style.opacity = '1';
+    }
 });
+
 
 // ==================== //
 // PAYMENT INFO SECTION //
@@ -106,6 +156,7 @@ payment.addEventListener( 'change', (e) => {
     }
 });
 
+
 // =============== //
 // FORM VALIDATION //
 // =============== //
@@ -118,55 +169,91 @@ const cvv = document.querySelector('#cvv'); // CVV input element
 
 // validation helper functions
 const nameValidator = () => {
-    const nameValue = name.value; // value of name field
-    const nameIsValid = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z']*?$/.test(nameValue); // validates name field
+    const nameIsValid = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z']*?$/.test(name.value); // validates name field
     return nameIsValid;
 }
 
 const emailValidator = () => {
-    const emailValue = email.value; // value of email field
-    const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue); // validates email field
+    const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email.value); // validates email field
     return emailIsValid;
 }
 
+// const activityValidator = () => {
+//     const activityIsValid = () => {
+//         for ( let i = 0; i <  ) {
+
+//         }
+//     }
+//     return activityIsValid;
+// }
+
 const ccNumValidator = () => {
-    const ccNumValue = ccNum.value; // value of card number field
-    const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNumValue);// validates card number field
+    const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNum.value);// validates card number field
     return ccNumIsValid;
 }
 
 const zipCodeValidator = () => {
-    const zipCodeValue = zipCode.value; // value of zip code field
-    const zipCodeIsValid = /^\d{5}$/.test(zipCodeValue); // validates zip code field
+    const zipCodeIsValid = /^\d{5}$/.test(zipCode.value); // validates zip code field
     return zipCodeIsValid;
 }
 
 const cvvValidator = () => {
-    const cvvValue = cvv.value; // value of cvv field
-    const cvvIsValid = /^\d{3}$/.test(cvvValue); // validates cvv field
+    const cvvIsValid = /^\d{3}$/.test(cvv.value); // validates cvv field
     return cvvIsValid;
 }
 
-// form submission event listener
+// validates form fields as user types
+name.addEventListener( 'keyup', nameValidator );
+email.addEventListener( 'keyup', emailValidator );
+ccNum.addEventListener( 'keyup', ccNumValidator );
+zipCode.addEventListener( 'keyup', zipCodeValidator );
+cvv.addEventListener( 'keyup', cvvValidator );
+
+// form submission event listener -- checks form validation when user clicks 'register' button
 form.addEventListener( 'submit', (e) => {
     e.preventDefault();
     // if any of the validation helper functions return false, alert the user of their error
     if ( !nameValidator() ) {
         e.preventDefault();
         name.parentElement.classList = 'not-valid'; // add error indicator if not valid
-        name.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+
+        if ( name.value === '' ) {
+            name.parentElement.lastElementChild.style.display = 'block'; // show error hint if field left blank
+            name.parentElement.children[2].style.display = 'none'; // hide other error hint
+        } else {
+            name.parentElement.children[2].style.display = 'block'; // show error hint if field contains numbers or invalid symbols
+            name.parentElement.lastElementChild.style.display = 'none'; // hide other error hint
+        }
     } else {
         name.parentElement.classList = 'valid'; // add valid indicator if valid
         name.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+        name.parentElement.children[2].style.display = 'none'; // hide other error hint if valid
     }
       
     if ( !emailValidator() ) {
         e.preventDefault();
         email.parentElement.classList = 'not-valid';; // add error indicator if not valid
-        email.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+
+        if ( email.value === '' ) {
+            email.parentElement.lastElementChild.style.display = 'block'; // show error hint if field left blank
+            email.parentElement.children[2].style.display = 'none'; // hide other error hint
+        } else {
+            email.parentElement.children[2].style.display = 'block'; // show error hint if field contains numbers or invalid symbols
+            email.parentElement.lastElementChild.style.display = 'none'; // hide other error hint
+        }
     } else {
-        email.parentElement.classList = 'valid';; // add error indicator if not valid
+        email.parentElement.classList = 'valid';; // add valid indicator if valid
         email.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+        email.parentElement.children[2].style.display = 'none'; // hide other error hint if valid
+    }
+
+    if ( !activityValidator() ) {
+        e.preventDefault();
+        activityRegister.parentElement.classList = 'not-valid';; // add error indicator if not valid
+        activityRegister.parentElement.lastElementChild.style.display = 'block' // show error hint if no activities are checked
+    } else {
+        activityRegister.parentElement.classList = 'valid';; // // add valid indicator if valid
+        activityRegister.parentElement.lastElementChild.style.display = 'none' // hide error hint if valid
     }
 
     // only validate credit card info if credit card is selected in the payment select element
@@ -201,21 +288,10 @@ form.addEventListener( 'submit', (e) => {
     }
 });
 
+
 // ================================= //
 // ACCESSIBILITY -- ERROR INDICATION //
 // ================================= //
 
-const activities = document.querySelectorAll('[type=checkbox]'); // activity check boxes in register for activities fieldset
 
-// loop through activities
-for ( let i = 0; i < activities.length; i++ ) {
-    // add focus class to check box if user clicks on it
-    activities[i].addEventListener( 'focus', (e) => {
-        activities[i].parentElement.classList.add('focus');
-    });
-    // remove focus class from check box if user clicks off of it
-    activities[i].addEventListener( 'blur', (e) => {
-        activities[i].parentElement.classList.remove('focus');
-    });
-}
 

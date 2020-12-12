@@ -280,7 +280,7 @@ const cvvValidator = () => {
     return cvvIsValid;
 }
 
-// validates form fields as user types
+// validates form fields in real time
 name.addEventListener( 'keyup', nameValidator );
 email.addEventListener( 'keyup', emailValidator );
 activityRegister.addEventListener( 'change', activityValidator );

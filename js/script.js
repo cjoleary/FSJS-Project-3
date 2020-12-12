@@ -85,7 +85,7 @@ activityRegister.addEventListener( 'change', (e) => {
         totalCost -= activityCost;
         totalActivities--;
     }
-    console.log(totalActivities);
+ 
     // updates HTML of activityTotal to reflect the totalCost
     activityTotal.innerHTML = `Total: $${totalCost}`;
 
@@ -170,51 +170,26 @@ const zipCode = document.querySelector('#zip'); // zip code input element
 const cvv = document.querySelector('#cvv'); // CVV input element
 
 // validation helper functions
+
+function validationPass ( element ) {
+    element.parentElement.classList.add('valid'); // add valid indicator if valid
+    element.parentElement.classList.remove('not-valid');
+}
+
+function validationFail ( element ) {
+    element.parentElement.classList.add('not-valid'); // add error indicator if not valid
+    element.parentElement.classList.remove('valid');
+}
+
 const nameValidator = () => {
     const nameIsValid = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z']*?$/.test(name.value); // validates name field
-    return nameIsValid;
-}
 
-const emailValidator = () => {
-    const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email.value); // validates email field
-    return emailIsValid;
-}
-
-const activityValidator = () => {
-    const activityIsValid = totalActivities > 0;
-    return activityIsValid;
-}
-
-const ccNumValidator = () => {
-    const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNum.value);// validates card number field
-    return ccNumIsValid;
-}
-
-const zipCodeValidator = () => {
-    const zipCodeIsValid = /^\d{5}$/.test(zipCode.value); // validates zip code field
-    return zipCodeIsValid;
-}
-
-const cvvValidator = () => {
-    const cvvIsValid = /^\d{3}$/.test(cvv.value); // validates cvv field
-    return cvvIsValid;
-}
-
-// validates form fields as user types
-name.addEventListener( 'keyup', nameValidator );
-email.addEventListener( 'keyup', emailValidator );
-ccNum.addEventListener( 'keyup', ccNumValidator );
-zipCode.addEventListener( 'keyup', zipCodeValidator );
-cvv.addEventListener( 'keyup', cvvValidator );
-
-// form submission event listener -- checks form validation when user clicks 'register' button
-form.addEventListener( 'submit', (e) => {
-    e.preventDefault();
-    // if any of the validation helper functions return false, alert the user of their error
-    if ( !nameValidator() ) {
-        e.preventDefault();
-        name.parentElement.classList = 'not-valid'; // add error indicator if not valid
-
+    if ( nameIsValid ) {
+        validationPass( name );
+        name.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+        name.parentElement.children[2].style.display = 'none'; // hide other error hint if valid
+    } else {
+        validationFail( name );
         if ( name.value === '' ) {
             name.parentElement.lastElementChild.style.display = 'block'; // show error hint if field left blank
             name.parentElement.children[2].style.display = 'none'; // hide other error hint
@@ -222,16 +197,20 @@ form.addEventListener( 'submit', (e) => {
             name.parentElement.children[2].style.display = 'block'; // show error hint if field contains numbers or invalid symbols
             name.parentElement.lastElementChild.style.display = 'none'; // hide other error hint
         }
-    } else {
-        name.parentElement.classList = 'valid'; // add valid indicator if valid
-        name.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
-        name.parentElement.children[2].style.display = 'none'; // hide other error hint if valid
     }
-      
-    if ( !emailValidator() ) {
-        e.preventDefault();
-        email.parentElement.classList = 'not-valid';; // add error indicator if not valid
 
+    return nameIsValid;
+}
+
+const emailValidator = () => {
+    const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email.value); // validates email field
+
+    if ( emailIsValid ) {
+        validationPass( email );
+        email.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+        email.parentElement.children[2].style.display = 'none'; // hide other error hint if valid
+    } else {
+        validationFail( email );
         if ( email.value === '' ) {
             email.parentElement.lastElementChild.style.display = 'block'; // show error hint if field left blank
             email.parentElement.children[2].style.display = 'none'; // hide other error hint
@@ -239,58 +218,108 @@ form.addEventListener( 'submit', (e) => {
             email.parentElement.children[2].style.display = 'block'; // show error hint if field contains numbers or invalid symbols
             email.parentElement.lastElementChild.style.display = 'none'; // hide other error hint
         }
+    }
+
+    return emailIsValid;
+}
+
+const activityValidator = () => {
+    const activityIsValid = totalActivities > 0; // validates activity field
+
+    if ( activityIsValid ) {
+        activityRegister.classList.remove('not-valid'); // // add valid indicator if valid
+        activityRegister.classList.add('valid'); // // add valid indicator if valid
+        activityRegister.lastElementChild.style.display = 'none' // hide error hint if valid
     } else {
-        email.parentElement.classList = 'valid';; // add valid indicator if valid
-        email.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
-        email.parentElement.children[2].style.display = 'none'; // hide other error hint if valid
+        activityRegister.classList.add('not-valid'); // add error indicator if not valid
+        activityRegister.lastElementChild.style.display = 'block' // show error hint if no activities are checked
+    }
+
+    return activityIsValid;
+}
+
+const ccNumValidator = () => {
+    const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNum.value);// validates card number field
+
+    if ( ccNumIsValid ) {
+        validationPass( ccNum );
+        ccNum.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+    } else {
+        validationFail( ccNum );
+        ccNum.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+    }
+
+    return ccNumIsValid;
+}
+
+const zipCodeValidator = () => {
+    const zipCodeIsValid = /^\d{5}$/.test(zipCode.value); // validates zip code field
+
+    if ( zipCodeIsValid ) {
+        validationPass( zipCode );
+        zipCode.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+    } else {
+        validationFail( zipCode );
+        zipCode.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+    }
+
+    return zipCodeIsValid;
+}
+
+const cvvValidator = () => {
+    const cvvIsValid = /^\d{3}$/.test(cvv.value); // validates cvv field
+
+    if ( cvvIsValid ) {
+        validationPass( cvv );
+        cvv.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
+    } else {
+        validationFail( cvv );
+        cvv.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
+    }
+
+    return cvvIsValid;
+}
+
+// validates form fields as user types
+name.addEventListener( 'keyup', nameValidator );
+email.addEventListener( 'keyup', emailValidator );
+activityRegister.addEventListener( 'change', activityValidator );
+ccNum.addEventListener( 'keyup', ccNumValidator );
+zipCode.addEventListener( 'keyup', zipCodeValidator );
+cvv.addEventListener( 'keyup', cvvValidator );
+
+// form submission event listener -- checks form validation when user clicks 'register' button
+form.addEventListener( 'submit', (e) => {
+    // e.preventDefault();
+    // if any of the validation helper functions return false, alert the user of their error
+    if ( !nameValidator() ) {
+        e.preventDefault();
+    }
+      
+    if ( !emailValidator() ) {
+        e.preventDefault();
     }
 
     if ( !activityValidator() ) {
         e.preventDefault();
-        activityRegister.classList.add('not-valid'); // add error indicator if not valid
-        activityRegister.lastElementChild.style.display = 'block' // show error hint if no activities are checked
-    } else {
-        activityRegister.classList.remove('not-valid'); // // add valid indicator if valid
-        activityRegister.classList.add('valid'); // // add valid indicator if valid
-        activityRegister.lastElementChild.style.display = 'none' // hide error hint if valid
     }
   
     // only validate credit card info if credit card is selected in the payment select element
-    if ( payment.children[1].selected = true ) {
+    if ( payment.children[1].selected === true ) {
         
         if ( !ccNumValidator() ) {
             e.preventDefault();
-            ccNum.parentElement.classList = 'not-valid';; // add error indicator if not valid
-            ccNum.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
-        } else {
-            ccNum.parentElement.classList = 'valid';; // add error indicator if not valid
-            ccNum.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
         }
         
         if ( !zipCodeValidator() ) {
             e.preventDefault();
-            zipCode.parentElement.classList = 'not-valid';; // add error indicator if not valid
-            zipCode.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
-        } else {
-            zipCode.parentElement.classList = 'valid';; // add error indicator if not valid
-            zipCode.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
         }
 
         if ( !cvvValidator() ) {
             e.preventDefault();
-            cvv.parentElement.classList = 'not-valid'; // add error indicator if not valid
-            cvv.parentElement.lastElementChild.style.display = 'block'; // show error hint if not valid
-        } else {
-            cvv.parentElement.classList = 'valid';; // add error indicator if not valid
-            cvv.parentElement.lastElementChild.style.display = 'none'; // hide error hint if valid
         }
     }
 });
-
-
-// ================================= //
-// ACCESSIBILITY -- ERROR INDICATION //
-// ================================= //
 
 
 

@@ -56,10 +56,10 @@ tshirtDesign.addEventListener( 'change', (e) => {
 // =============================== //
 
 const activityRegister = document.querySelector('#activities'); // register for activities fieldset
+const activities = document.querySelectorAll('[type=checkbox]'); // activity check boxes in register for activities fieldset
 const activityTotal = document.querySelector('#activities-cost'); // activities cost <p> element
 let totalCost = 0; // sets user's cost of attending conference to 0
-const activities = document.querySelectorAll('[type=checkbox]'); // activity check boxes in register for activities fieldset
-console.log(activities);
+let totalActivities = 0 // sets number of activities registered to 0
 
 // loop through activities
 for ( let i = 0; i < activities.length; i++ ) {
@@ -77,13 +77,15 @@ for ( let i = 0; i < activities.length; i++ ) {
 activityRegister.addEventListener( 'change', (e) => {
     const activityCost = parseInt(e.target.getAttribute('data-cost')); // the cost of each individual activity as a number
     
-    // updates totalCost as user checks or unchecks activities from activity fieldset
+    // updates totalCost and totalActivities as user checks or unchecks activities from activity fieldset
     if ( e.target.checked === true ) {
         totalCost += activityCost;
+        totalActivities++;
     } else if ( e.target.checked === false ) {
         totalCost -= activityCost;
+        totalActivities--;
     }
-    
+    console.log(totalActivities);
     // updates HTML of activityTotal to reflect the totalCost
     activityTotal.innerHTML = `Total: $${totalCost}`;
 
@@ -178,14 +180,10 @@ const emailValidator = () => {
     return emailIsValid;
 }
 
-// const activityValidator = () => {
-//     const activityIsValid = () => {
-//         for ( let i = 0; i <  ) {
-
-//         }
-//     }
-//     return activityIsValid;
-// }
+const activityValidator = () => {
+    const activityIsValid = totalActivities > 0;
+    return activityIsValid;
+}
 
 const ccNumValidator = () => {
     const ccNumIsValid = /^\b\d{13,16}\b$/.test(ccNum.value);// validates card number field
@@ -249,13 +247,14 @@ form.addEventListener( 'submit', (e) => {
 
     if ( !activityValidator() ) {
         e.preventDefault();
-        activityRegister.parentElement.classList = 'not-valid';; // add error indicator if not valid
-        activityRegister.parentElement.lastElementChild.style.display = 'block' // show error hint if no activities are checked
+        activityRegister.classList.add('not-valid'); // add error indicator if not valid
+        activityRegister.lastElementChild.style.display = 'block' // show error hint if no activities are checked
     } else {
-        activityRegister.parentElement.classList = 'valid';; // // add valid indicator if valid
-        activityRegister.parentElement.lastElementChild.style.display = 'none' // hide error hint if valid
+        activityRegister.classList.remove('not-valid'); // // add valid indicator if valid
+        activityRegister.classList.add('valid'); // // add valid indicator if valid
+        activityRegister.lastElementChild.style.display = 'none' // hide error hint if valid
     }
-
+  
     // only validate credit card info if credit card is selected in the payment select element
     if ( payment.children[1].selected = true ) {
         
